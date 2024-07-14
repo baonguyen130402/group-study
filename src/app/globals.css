@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button.primary {
+  background-color: #00adef;
+  @apply p-2 w-full text-white rounded-sm;
+}
+
+button.primary:hover {
+  background-color: #2596be;
+  @apply text-shadow-glow;
+}
