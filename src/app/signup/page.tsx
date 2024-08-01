@@ -11,11 +11,9 @@ const Home = async () => {
   }
 
   return (
-    <section className="bg-primary h-screen w-screen flex justify-center items-center">
-      <div className="w-[800px]">
-        SignUpForm
-      </div>
-    </section>
+    <div>
+      SignUpForm
+    </div>
   );
 };
 

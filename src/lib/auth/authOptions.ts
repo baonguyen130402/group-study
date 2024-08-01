@@ -2,8 +2,6 @@ import { NextAuthOptions } from "next-auth";
 
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-import Passage from "next-auth/providers/passage";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -14,15 +12,6 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {
-        email: {},
-        password: {},
-      },
-      async authorize(credentials, request) {
-      },
     }),
   ],
 };
