@@ -1,4 +1,8 @@
-import * as React from "react";
+"use client";
+
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
+import clsx from "clsx";
 
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -9,14 +13,22 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { CourseCard } from "./course-card";
-import clsx from "clsx";
 
 export function ListCourses(props: any) {
   const { type } = props;
 
+  const plugin = useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true }),
+  );
+
   return (
     <div className="flex justify-center items-center">
-      <Carousel className="max-w-7xl">
+      <Carousel
+        plugins={type === "banner" ? [plugin.current] : []}
+        className="max-w-7xl"
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
+      >
         <CarouselContent className="-ml-1">
           {Array.from({ length: 10 }).map((_, index) => (
             <CarouselItem
@@ -37,8 +49,12 @@ export function ListCourses(props: any) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        {type === "banner" ? <></> : (
+          <>
+            <CarouselPrevious />
+            <CarouselNext />
+          </>
+        )}
       </Carousel>
     </div>
   );
