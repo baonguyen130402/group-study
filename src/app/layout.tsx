@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import SessionObserver from "@/lib/contexts/SessionObserver";
 import { ThemeProvider } from "@/components/theme-provider";
+import Sidebar from "@/components/sidebar";
+import { SiteHeader } from "@/components/Site-Header";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -32,7 +34,15 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <main className="relative">
+              <SiteHeader />
+              <div className="absolute top-24 right-0 left-0 flex justify-center">
+                <div className="fixed left-[52px] z-10">
+                  <Sidebar />
+                </div>
+                {children}
+              </div>
+            </main>
           </ThemeProvider>
         </body>
       </html>

@@ -4,7 +4,6 @@ import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 import clsx from "clsx";
 
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -34,7 +33,7 @@ export function ListCourses(props: any) {
             <CarouselItem
               key={index}
               className={clsx("pl-1 md:basis-1/2", {
-                "lg:basis-2/3": type === "banner",
+                "lg:basis-11/12": type === "banner",
                 "lg:basis-1/5": type === "card",
               })}
             >
@@ -42,8 +41,8 @@ export function ListCourses(props: any) {
                 <CourseCard
                   header={`Card ${index + 1}`}
                   description={`This is card ${index + 1}`}
-                  content={index + 1}
-                  type={type}
+                  content={`${index + 1}`}
+                  type={type as string}
                 />
               </div>
             </CarouselItem>

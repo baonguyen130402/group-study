@@ -8,11 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
+import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const router = useRouter();
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -63,7 +66,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         variant="outline"
         type="button"
         disabled={isLoading}
-        onClick={() => signIn("google")}
+        onClick={async () => {
+          await signIn("google");
+          router.push("/");
+        }}
       >
         {isLoading
           ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
@@ -73,7 +79,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         variant="outline"
         type="button"
         disabled={isLoading}
-        onClick={() => signIn("github")}
+        onClick={() => {
+          signIn("github");
+          router.push("/");
+        }}
       >
         {isLoading
           ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

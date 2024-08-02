@@ -7,7 +7,6 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { split } from "postcss/lib/list";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +20,7 @@ import {
 import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import clsx from "clsx";
+import { Icons } from "./icons/icons";
 
 export function SiteHeader() {
   const router = useRouter();
@@ -40,9 +40,12 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="container max-w-screen-2xl backdrop-blur-lg fixed -top-25 z-10">
-      <div className="flex justify-between items-center py-2 px-8">
-        <div>Logo</div>
+    <header className="backdrop-blur-lg fixed top-0 right-0 left-0 z-10">
+      <div className="flex justify-between items-center p-2 container max-w-screen-2xl">
+        <div className="flex items-center">
+          <Icons.logo />
+          <span className="ml-4 text-lg font-bold">Codelearn for kids</span>
+        </div>
         <div className="flex w-2/5">
           <Input
             type="text"
@@ -87,7 +90,7 @@ export function SiteHeader() {
                     <DropdownMenuItem>My Courses</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => signOut()}>
-                      Log out
+                      Logout
                       <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
