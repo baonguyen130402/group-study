@@ -11,16 +11,14 @@ export default function Home() {
   }
 
   return (
-    <div className="flex">
-      <div className="flex flex-col items-center">
-        <div className="w-1/5">
-          <ListCourses type="banner" />
-        </div>
-        <div className="w-2/3 flex flex-col">
-          <Course courseName="Front-end" />
-          <Course courseName="Back-end" />
-          <Course courseName="Springboot" />
-        </div>
+    <div className="flex flex-col justify-center items-center">
+      <div className="w-1/5">
+        <ListCourses type="banner" />
+      </div>
+      <div className="w-2/3 flex flex-col">
+        <Course courseName="Front-end" />
+        <Course courseName="Back-end" />
+        <Course courseName="Springboot" />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
@@ -25,6 +25,7 @@ import { Icons } from "./icons/icons";
 export function SiteHeader() {
   const router = useRouter();
   const { theme } = useTheme();
+  const pathname = usePathname();
   const { data: session } = useSession();
   console.log(session);
 
@@ -46,37 +47,30 @@ export function SiteHeader() {
           <Icons.logo />
           <span className="ml-4 text-lg font-bold">Codelearn for kids</span>
         </div>
-        <div className="flex w-2/5">
+        <div
+          className={clsx("flex w-2/5", {
+            "invisible": pathname === "/roadmap",
+          })}
+        >
           <Input
             type="text"
             placeholder="Search course, post,..."
             className="rounded-tr-none rounded-br-none focus-visible:ring-none focus-visible:ring-0"
           />
           <Button className="rounded-tl-none rounded-bl-none">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m15.75 15.75-2.489-2.489m0 0a3.375 3.375 0 1 0-4.773-4.773 3.375 3.375 0 0 0 4.774 4.774ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
+            <Icons.search />
           </Button>
         </div>
-
         <div className="flex items-center">
           {session
             ? (
               <div className="flex items-center">
+                <div className="cursor-pointer">
+                  <Icons.notify />
+                </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
-                    <Avatar className="cursor-pointer">
+                    <Avatar className="cursor-pointer h-8 w-8 ml-4">
                       <AvatarImage src={session?.user?.image as string} />
                       <AvatarFallback>
                         {getFallBack(session?.user?.name as string)}

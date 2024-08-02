@@ -36,7 +36,7 @@ export default function RootLayout({
           >
             <main className="relative">
               <SiteHeader />
-              <div className="absolute top-24 right-0 left-0 flex justify-center">
+              <div className="absolute top-24 right-0 left-0">
                 <div className="fixed left-[52px] z-10">
                   <Sidebar />
                 </div>
