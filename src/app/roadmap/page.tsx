@@ -1,6 +1,6 @@
-import Sidebar from "@/components/sidebar";
-import { CardContent } from "@/components/ui/card";
-import CardRoadMap from "./components/Card";
+"use client"
+
+import CardRoadMap from "./component/Card";
 
 export default function RoadMapPage() {
   const Cards = [
@@ -8,7 +8,7 @@ export default function RoadMapPage() {
       title: "Front-end",
       content:
         "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
-      image: "/favicon/fe.png"
+      image: "/favicon/fe.png",
     },
     {
       title: "Back-end",

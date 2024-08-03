@@ -21,13 +21,14 @@ import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import clsx from "clsx";
 import { Icons } from "./icons/icons";
+import { Suspense } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 export function SiteHeader() {
   const router = useRouter();
   const { theme } = useTheme();
   const pathname = usePathname();
   const { data: session } = useSession();
-  console.log(session);
 
   const getFallBack = (s: string) => {
     const result: any[] = [];
@@ -77,7 +78,7 @@ export function SiteHeader() {
                       </AvatarFallback>
                     </Avatar>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
+                  <DropdownMenuContent align="end">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Profile</DropdownMenuItem>
@@ -105,7 +106,9 @@ export function SiteHeader() {
                 >
                   Sign In
                 </Button>
-                <Button onClick={() => router.push("/signup")}>Sign Up</Button>
+                <Button onClick={() => router.push("/signup")}>
+                  Sign Up
+                </Button>
                 <ModeToggle />
               </div>
             )}
