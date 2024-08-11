@@ -1,7 +1,8 @@
 {
-  "name": "windows-10",
+  "name": "group-study",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8080",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.6.0",
+    "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
@@ -27,9 +28,10 @@
     "prisma": "^5.15.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.51.5",
+    "react-hook-form": "^7.52.2",
     "react-type-animation": "^3.2.0",
     "react-typed": "^2.0.12",
+    "sonner": "^1.5.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-textshadow": "^2.1.3",

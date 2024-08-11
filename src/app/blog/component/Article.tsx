@@ -9,12 +9,12 @@ import {
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 
 interface Props {
-  avatar: string;
-  name: string;
+  avatar?: string;
+  name?: string;
   title: string;
   desc: string;
   thumbnail: string;
-  hashtags: any;
+  hashtags?: any;
 }
 
 export default function Article(props: Props) {
@@ -39,7 +39,7 @@ export default function Article(props: Props) {
                     </Avatar>
                     <span className="text-sm font-semibold">{name}</span>
                   </div>
-                  <div className="text-white">
+                  <div className="text-white hover:text-yellow-400 cursor-pointer">
                     <Icons.bookmark />
                   </div>
                 </div>
@@ -52,14 +52,14 @@ export default function Article(props: Props) {
                   </CardHeader>
                   <CardContent className="p-0">
                     <img
-                      className="h-[150px] w-[300px] bg-white rounded-2xl"
+                      className="h-[150px] w-[300px] bg-white rounded-2xl object-contain"
                       src={thumbnail}
                     />
                   </CardContent>
                 </div>
                 <div className="flex gap-2 w-full">
-                  {hashtags.map((hashtag: any) => (
-                    <div className="px-3 py-0.5 bg-gray-700 rounded-3xl cursor-pointer hover:bg-gray-500 transition ease-linear">
+                  {hashtags?.map((hashtag: any) => (
+                    <div className="px-3 py-0.5 rounded-3xl cursor-pointer transition ease-linear bg-blue-400 hover:bg-blue-500">
                       {hashtag}
                     </div>
                   ))}

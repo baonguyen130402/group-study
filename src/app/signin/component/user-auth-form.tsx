@@ -1,93 +1,104 @@
 "use client";
 
-import * as React from "react";
+import React from "react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { cn } from "@/lib/utils";
-import { Icons } from "@/components/icons/icons";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { signIn } from "next-auth/react";
-import { redirect } from "next/dist/server/api-utils";
-import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import Link from "next/link";
+import { Icons } from "@/components/icons/icons";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
+const formSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, {
+        message: "This field has to be filled.",
+      })
+      .email("This is not a valid email"),
+    password: z
+      .string()
+      .min(6, { message: "Password has to be at least 6 characters long." })
+      .max(300, {
+        message: "Password can't be longer than 32 characters.",
+      }),
+  });
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const router = useRouter();
+const SignInForm = () => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {},
+  });
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const response = await fetch(`/api/auth/register`, {
+      method: "POST",
+      body: JSON.stringify(values),
+    });
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    const data = await response.json();
+
+    if (data.error) {
+      toast.error(data.error);
+    }
+
+    toast.success("Account created!");
   }
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
-        <div className="grid gap-2">
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-          </div>
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+    <div className="border lg:p-4 md:p-2 rounded-2xl mx-auto flex w-full flex-col justify-center sm:w-[350px]">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <h1 className="text-2xl text-center font-semibold">Sign In</h1>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="johndoe@whatever.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            Sign In with Email
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Link className="block hover:underline text-sm" href={"/login"}>
+            Not have an account?
+          </Link>
+          <Button type="submit" className="w-full">
+            Sign In with
+            <Icons.logo className="pl-1 pr-0.5 w-[28px] font-extrabold" />
+            account
           </Button>
-        </div>
-      </form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
-      </div>
-      <Button
-        variant="outline"
-        type="button"
-        disabled={isLoading}
-        onClick={async () => {
-          await signIn("google");
-          router.push("/");
-        }}
-      >
-        {isLoading
-          ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-          : <Icons.google className="mr-2 h-4 w-4" />} Google
-      </Button>
-      <Button
-        variant="outline"
-        type="button"
-        disabled={isLoading}
-        onClick={() => {
-          signIn("github");
-          router.push("/");
-        }}
-      >
-        {isLoading
-          ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-          : <Icons.gitHub className="mr-2 h-4 w-4" />} GitHub
-      </Button>
+        </form>
+      </Form>
     </div>
   );
-}
+};
+
+export default SignInForm;

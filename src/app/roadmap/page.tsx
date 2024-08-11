@@ -1,5 +1,3 @@
-"use client"
-
 import CardRoadMap from "./component/Card";
 
 export default function RoadMapPage() {

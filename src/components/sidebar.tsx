@@ -15,7 +15,9 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="backdrop-blur-lg space-y-2 pl-4 pr-2 md:relative">
+    <div className={clsx("backdrop-blur-lg space-y-2 pl-4 pr-2 md:relative", {
+      "invisible": pathname === "/signup" || pathname === "/signin",
+    })}>
       {links.map((link) => {
         const LinkIcon = link.icon;
         

@@ -1,11 +1,15 @@
 "use client";
 
+import clsx from "clsx";
+import { useTheme } from "next-themes";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
-import { ModeToggle } from "./mode-toggle";
-import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useSession } from "next-auth/react";
+import { Button } from "./ui/button";
+import { Icons } from "./icons/icons";
+import { ModeToggle } from "./mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
@@ -17,14 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-import { signOut } from "next-auth/react";
-import { useTheme } from "next-themes";
-import clsx from "clsx";
-import { Icons } from "./icons/icons";
-import { Suspense } from "react";
-import { Skeleton } from "./ui/skeleton";
-
-export function SiteHeader() {
+export function Header() {
   const router = useRouter();
   const { theme } = useTheme();
   const pathname = usePathname();
@@ -44,13 +41,14 @@ export function SiteHeader() {
   return (
     <header className="backdrop-blur-lg fixed top-0 right-0 left-0 z-10">
       <div className="flex justify-between items-center p-2 container max-w-screen-2xl">
-        <div className="flex items-center">
+        <a href="/" className="flex items-center">
           <Icons.logo />
           <span className="ml-4 text-lg font-bold">Codelearn for kids</span>
-        </div>
+        </a>
         <div
           className={clsx("flex w-2/5", {
-            "invisible": pathname === "/roadmap",
+            "invisible": pathname === "/roadmap" || pathname === "/signin" ||
+              pathname === "/signup",
           })}
         >
           <Input

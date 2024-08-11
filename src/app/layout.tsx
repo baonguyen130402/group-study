@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import SessionObserver from "@/lib/contexts/SessionObserver";
 import { ThemeProvider } from "@/components/theme-provider";
 import Sidebar from "@/components/sidebar";
-import { SiteHeader } from "@/components/Site-Header";
+import { Header } from "@/components/header";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -35,7 +35,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <main className="relative">
-              <SiteHeader />
+              <Header />
               <div className="absolute top-24 right-0 left-0">
                 <div className="fixed left-[52px] z-10">
                   <Sidebar />

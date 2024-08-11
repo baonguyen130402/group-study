@@ -3,97 +3,44 @@
 import { useSearchParams } from "next/navigation";
 import Article from "./component/Article";
 import { ArticlePagination } from "./component/Pagination";
+import clsx from "clsx";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { fetchPost } from "@/lib/data";
+import { SkeletonPostCard } from "@/components/skeleton-post-card";
 
 export default function ArticlePage() {
-  const Posts = [
-    {
-      user: {
-        avatar: "/favicon/fe.png",
-        name: "John Doe",
-      },
-      title: "John Doe's Knowledge",
-      desc:
-        "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
-      thumbnail: "/favicon/devops.png",
-      hashtag: ["front-end", "back-end"],
-    },
-    {
-      user: {
-        avatar: "/favicon/be.png",
-        name: "John Doe",
-      },
-      title: "John Doe's Knowledge",
-      desc:
-        "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
-      thumbnail: "/favicon/devops.png",
-      hashtag: ["front-end", "back-end"],
-    },
-    {
-      user: {
-        avatar: "/favicon/be.png",
-        name: "John Doe",
-      },
-      title: "John Doe's Knowledge",
-      desc:
-        "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
-      thumbnail: "/favicon/devops.png",
-      hashtag: ["front-end", "back-end"],
-    },
-    {
-      user: {
-        avatar: "/favicon/be.png",
-        name: "John Doe",
-      },
-      title: "John Doe's Knowledge",
-      desc:
-        "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
-      thumbnail: "/favicon/devops.png",
-      hashtag: ["front-end", "back-end"],
-    },
-    {
-      user: {
-        avatar: "/favicon/fe.png",
-        name: "John Doe",
-      },
-      title: "John Doe's Knowledge 2",
-      desc:
-        "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
-      thumbnail: "/favicon/devops.png",
-      hashtag: ["front-end", "back-end"],
-    },
-    {
-      user: {
-        avatar: "/favicon/be.png",
-        name: "John Doe",
-      },
-      title: "John Doe's Knowledge",
-      desc:
-        "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
-      thumbnail: "/favicon/devops.png",
-      hashtag: ["front-end", "back-end"],
-    },
-    {
-      user: {
-        avatar: "/favicon/be.png",
-        name: "John Doe",
-      },
-      title: "John Doe's Knowledge",
-      desc:
-        "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
-      thumbnail: "/favicon/devops.png",
-      hashtag: ["front-end", "back-end"],
-    },
-    {
-      user: {
-        avatar: "/favicon/be.png",
-        name: "John Doe",
-      },
-      title: "John Doe's Knowledge",
-      desc:
-        "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
-      thumbnail: "/favicon/devops.png",
-      hashtag: ["front-end", "back-end"],
-    },
+  const { theme } = useTheme();
+  const [loading, setLoading] = useState(false);
+  const [posts, setPosts] = useState([{
+    title: "",
+    desc: "",
+    hashtag: "",
+    thumbnailUrl: "",
+  }]);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+
+      const data = await fetchPost();
+
+      await new Promise(() =>
+        setTimeout(() => {
+          setPosts(data);
+          setLoading(false);
+        }, 1000)
+      );
+    })();
+  }, []);
+
+  console.log(posts);
+
+  const Hashtags = [
+    "ReactJs/FE",
+    "Springboot",
+    "NodeJs",
+    "DevOps",
   ];
 
   const ITEM_PER_PAGE = 4;
@@ -112,34 +59,37 @@ export default function ArticlePage() {
         </p>
         <div className="flex mt-16">
           <div className="grid row-4 gap-4">
-            {Posts.slice(
+            {!loading && posts.slice(
               ITEM_PER_PAGE * (currentPage - 1),
               ITEM_PER_PAGE * currentPage,
             ).map((
               post,
             ) => (
               <Article
-                avatar={post.user.avatar}
-                name={post.user.name}
                 title={post.title}
                 desc={post.desc}
-                thumbnail={post.thumbnail}
-                hashtags={post.hashtag}
+                thumbnail={post.thumbnailUrl}
+                hashtags={post.hashtag || []}
               />
             ))}
+            {loading && Array(4).fill(0).map(() => <SkeletonPostCard />)}
           </div>
           <div className="pr-8">
             <span className="font-bold text-md">
               VIEW ARTICLES BY TOPIC
             </span>
-            <div className="px-3 py-0.5 bg-gray-700 rounded-3xl cursor-pointer hover:bg-gray-500 transition ease-linear">
-              react
+            <div className="grid grid-cols-2 gap-2 mt-4">
+              {Hashtags.map((hashtag) => (
+                <div className="px-3 py-0.5 rounded-3xl cursor-pointer transition ease-linear bg-blue-400 hover:bg-blue-500">
+                  {hashtag}
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
       <div className="mt-16 self-center">
-        <ArticlePagination totalPages={2} />
+        <ArticlePagination totalPages={8} />
       </div>
     </div>
   );

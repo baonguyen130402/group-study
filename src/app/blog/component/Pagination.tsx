@@ -1,3 +1,6 @@
+import clsx from "clsx";
+import { usePathname, useSearchParams } from "next/navigation";
+
 import {
   Pagination,
   PaginationContent,
@@ -7,9 +10,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import clsx from "clsx";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 
 export function ArticlePagination({ totalPages }: { totalPages: number }) {
   const pathname = usePathname();
@@ -33,7 +33,9 @@ export function ArticlePagination({ totalPages }: { totalPages: number }) {
             "invisible": currentPage === 1,
           })}
         >
-          <PaginationLink href="#">{currentPage - 1}</PaginationLink>
+          <PaginationLink href={createPageURL(currentPage - 1)}>
+            {currentPage - 1}
+          </PaginationLink>
         </PaginationItem>
         <PaginationItem>
           <PaginationLink href="#" isActive>
@@ -41,10 +43,17 @@ export function ArticlePagination({ totalPages }: { totalPages: number }) {
           </PaginationLink>
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink href="#">{currentPage + 1}</PaginationLink>
+          <PaginationLink href={createPageURL(currentPage + 1)}>
+            {currentPage + 1}
+          </PaginationLink>
         </PaginationItem>
         <PaginationItem>
           <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href={createPageURL(totalPages)}>
+            {totalPages}
+          </PaginationLink>
         </PaginationItem>
         <PaginationItem>
           <PaginationNext href={createPageURL(currentPage + 1)} />
