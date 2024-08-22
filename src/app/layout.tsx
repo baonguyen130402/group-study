@@ -6,6 +6,7 @@ import SessionObserver from "@/lib/contexts/SessionObserver";
 import { ThemeProvider } from "@/components/theme-provider";
 import Sidebar from "@/components/sidebar";
 import { Header } from "@/components/header";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -21,31 +22,33 @@ export default function RootLayout({
 }>) {
   return (
     <SessionObserver>
-      <html lang="en">
-        <body
-          className={cn(
-            "min-h-screen bg-background font-sans antialiased",
-            inter.variable,
-          )}
-        >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+      <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID as string}>
+        <html lang="en">
+          <body
+            className={cn(
+              "min-h-screen bg-background font-sans antialiased",
+              inter.variable,
+            )}
           >
-            <main className="relative">
-              <Header />
-              <div className="absolute top-24 right-0 left-0">
-                <div className="fixed left-[52px] z-10">
-                  <Sidebar />
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <main className="relative">
+                <Header />
+                <div className="absolute top-24 right-0 left-0">
+                  <div className="fixed left-[52px] z-10">
+                    <Sidebar />
+                  </div>
+                  {children}
                 </div>
-                {children}
-              </div>
-            </main>
-          </ThemeProvider>
-        </body>
-      </html>
+              </main>
+            </ThemeProvider>
+          </body>
+        </html>
+      </GoogleOAuthProvider>
     </SessionObserver>
   );
 }

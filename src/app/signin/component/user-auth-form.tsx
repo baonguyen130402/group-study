@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Icons } from "@/components/icons/icons";
+import { useGoogleOneTapLogin } from "react-google-one-tap-login";
 
 const formSchema = z
   .object({
@@ -39,6 +40,14 @@ const SignInForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
+  });
+  
+  useGoogleOneTapLogin({
+    onSuccess: (res) => console.log(res),
+    onError: (err) => console.log(err),
+    googleAccountConfigs: {
+      client_id: process.env.GOOGLE_CLIENT_ID as string
+    }
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {

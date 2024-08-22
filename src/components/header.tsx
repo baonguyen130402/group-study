@@ -2,8 +2,7 @@
 
 import clsx from "clsx";
 import { useTheme } from "next-themes";
-import { signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { Input } from "./ui/input";
@@ -26,6 +25,7 @@ export function Header() {
   const { theme } = useTheme();
   const pathname = usePathname();
   const { data: session } = useSession();
+  console.log(session?.user);
 
   const getFallBack = (s: string) => {
     const result: any[] = [];

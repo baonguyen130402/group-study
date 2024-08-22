@@ -1,7 +1,18 @@
 import Link from "next/link";
+import { authOptions } from "@/lib/auth/authOptions";
 import { UserAuthForm } from "./component/user-auth-form";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { useGoogleOneTapLogin } from "react-google-one-tap-login";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
+    
+  if (session) {
+    redirect("/");
+  }
+
   return (
     <div className="lg:p-8">
       <div className="border lg:p-4 rounded-2xl mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">

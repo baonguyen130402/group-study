@@ -13,6 +13,7 @@ export default function ArticlePage() {
   const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([{
+    postId: "",
     title: "",
     desc: "",
     hashtag: "",
@@ -66,13 +67,15 @@ export default function ArticlePage() {
               post,
             ) => (
               <Article
+                key={post.postId}
                 title={post.title}
                 desc={post.desc}
                 thumbnail={post.thumbnailUrl}
                 hashtags={post.hashtag || []}
               />
             ))}
-            {loading && Array(4).fill(0).map(() => <SkeletonPostCard />)}
+            {loading &&
+              Array(4).fill(0).map((_, id) => <SkeletonPostCard key={id} />)}
           </div>
           <div className="pr-8">
             <span className="font-bold text-md">
@@ -80,7 +83,7 @@ export default function ArticlePage() {
             </span>
             <div className="grid grid-cols-2 gap-2 mt-4">
               {Hashtags.map((hashtag) => (
-                <div className="px-3 py-0.5 rounded-3xl cursor-pointer transition ease-linear bg-blue-400 hover:bg-blue-500">
+                <div className="px-3 py-0.5 rounded-3xl cursor-pointer transition ease-linear bg-slate-900 hover:bg-slate-800">
                   {hashtag}
                 </div>
               ))}

@@ -22,11 +22,11 @@ export default function Article(props: Props) {
 
   return (
     <div className="relative group cursor-normal w-11/12">
-      <div className="absolute -inset-1 bg-gradient-to-r from-red-600 to-violet-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200">
+      <div className="absolute -inset-1 bg-gradient-to-r from-neutral-600 to-stone-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200">
       </div>
       <div className="relative bg-white ring-1 ring-gray-900/5 rounded-lg leading-none flex items-top justify-start space-x-6">
         <div className="space-y-2">
-          <div className="rounded-lg bg-gradient-to-tr from-pink-300 to-blue-300 shadow-lg p-[0.5px]">
+          <div className="rounded-lg bg-gradient-to-tr from-pink-300 to-blue-300 shadow-lg p-[1px]">
             <div className="rounded-md">
               <Card className="p-4">
                 <div className="flex items-center justify-between mb-6">
@@ -59,7 +59,7 @@ export default function Article(props: Props) {
                 </div>
                 <div className="flex gap-2 w-full">
                   {hashtags?.map((hashtag: any) => (
-                    <div className="px-3 py-0.5 rounded-3xl cursor-pointer transition ease-linear bg-blue-400 hover:bg-blue-500">
+                    <div className="px-3 py-0.5 rounded-3xl cursor-pointer transition ease-linear border border-slate-500 bg-slate-900 hover:bg-slate-800">
                       {hashtag}
                     </div>
                   ))}

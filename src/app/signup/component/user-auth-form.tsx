@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
@@ -14,12 +13,14 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useGoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
+import axios from "axios";
+import { decodeJwt } from "jose";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -43,6 +44,42 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
+  });
+
+  const loginGoogle = useGoogleLogin({
+    onSuccess: async (credentialResponse) => {
+      // const { access_token: token } = credentialResponse;
+
+      console.log(credentialResponse);
+      
+      const token = await axios.post(
+        "http://localhost:8080/v3/auth/login",
+        credentialResponse,
+      );
+
+      console.log(token);
+
+      // console.log(payload);
+    },
+    onError: () => {
+      console.log("Login Failed");
+    },
+    // flow: "auth-code",
+  });
+
+  useGoogleOneTapLogin({
+    onSuccess: async (credentialResponse) => {
+      const { credential: token } = credentialResponse;
+      await axios.post("http://localhost:8080/v3/auth/login", token);
+
+      console.log(token);
+      // const payload = credential ? decodeJwt(credential) : undefined;
+      // console.log(payload);
+    },
+    onError: () => {
+      console.log("Login Failed");
+    },
+    cancel_on_tap_outside: true,
   });
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -145,9 +182,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           variant="outline"
           type="button"
           disabled={isLoading}
-          onClick={() => {
-            signIn("google");
-          }}
+          onClick={loginGoogle}
         >
           {isLoading
             ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
